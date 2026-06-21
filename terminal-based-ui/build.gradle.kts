@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
   implementation(project(":core"))
+  implementation(project(":bot"))
   testImplementation(kotlin("test"))
 }
 
