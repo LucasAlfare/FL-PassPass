@@ -17,6 +17,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+/**
+ * Spec-style tests covering the turn resolution rules.
+ */
 class SubmitTurnInteractorTest {
 
     private val interactor = SubmitTurnInteractor()
@@ -29,6 +32,7 @@ class SubmitTurnInteractorTest {
         activePlayerId = PlayerId(1),
     )
 
+    /** Ensures an active player can submit a valid action and receive the expected result. */
     @Test
     fun `submit turn accepts action from the active player`() {
         val result = interactor.execute(
@@ -46,6 +50,7 @@ class SubmitTurnInteractorTest {
         assertEquals(true, result.investigationAnswer)
     }
 
+    /** Ensures non-active players cannot act out of turn. */
     @Test
     fun `submit turn rejects action from a non active player`() {
         assertFailsWith<IllegalArgumentException> {
@@ -59,6 +64,7 @@ class SubmitTurnInteractorTest {
         }
     }
 
+    /** Ensures finished sessions refuse additional turns. */
     @Test
     fun `submit turn rejects finished games`() {
         val finishedSession = session.copy(winnerId = PlayerId(1))
@@ -76,6 +82,7 @@ class SubmitTurnInteractorTest {
         }
     }
 
+    /** Ensures a player with zero energy cannot perform even the cheapest action. */
     @Test
     fun `submit investigation rejects when active player has no energy`() {
         val exhaustedSession = session.copy(
@@ -95,6 +102,7 @@ class SubmitTurnInteractorTest {
         }
     }
 
+    /** Ensures the game ends immediately when the last point of energy is spent. */
     @Test
     fun `submit investigation ends the game when the last energy is spent`() {
         val lastEnergySession = session.copy(
@@ -115,6 +123,7 @@ class SubmitTurnInteractorTest {
         assertEquals(PlayerId(2), result.session.winnerId)
     }
 
+    /** Ensures the interactor rejects actions that exceed the player's available energy. */
     @Test
     fun `submit turn rejects when the player cannot afford the action cost`() {
         val lowEnergySession = session.copy(
@@ -134,6 +143,7 @@ class SubmitTurnInteractorTest {
         }
     }
 
+    /** Ensures a correct code attempt returns a full win and precise feedback. */
     @Test
     fun `submit code attempt returns feedback and winner when code is correct`() {
         val result = interactor.execute(
@@ -149,6 +159,7 @@ class SubmitTurnInteractorTest {
         assertEquals(20, result.session.players.first { it.id == PlayerId(1) }.energy.value)
     }
 
+    /** Ensures failed attempts still consume energy and hand the turn to the opponent. */
     @Test
     fun `submit code attempt consumes energy and passes turn when code is wrong`() {
         val result = interactor.execute(
@@ -165,6 +176,7 @@ class SubmitTurnInteractorTest {
         assertEquals(null, result.session.winnerId)
     }
 
+    /** Ensures a correct guess on the final energy point still resolves as an immediate win. */
     @Test
     fun `submit code attempt loses the game when the last energy is spent`() {
         val lastEnergySession = session.copy(
@@ -186,6 +198,7 @@ class SubmitTurnInteractorTest {
         assertEquals(GuessFeedback(correctPositions = 4, misplacedDigits = 0), result.feedback)
     }
 
+    /** Ensures block actions spend a charge and create the expected pending block effect. */
     @Test
     fun `submit block action creates a pending investigation block`() {
         val result = interactor.execute(
@@ -202,6 +215,7 @@ class SubmitTurnInteractorTest {
         assertEquals(PendingBlockEffect.Investigation(InvestigationBlockTarget.DIGIT_EXISTS), result.session.pendingBlock)
     }
 
+    /** Ensures blocked investigation categories are rejected before they resolve. */
     @Test
     fun `submit blocked investigation category is rejected`() {
         val blockedSession = session.copy(
@@ -220,6 +234,7 @@ class SubmitTurnInteractorTest {
         }
     }
 
+    /** Ensures the attempt-clue block strips misplaced-digit information from feedback. */
     @Test
     fun `submit attempt clue block removes misplaced digits from feedback`() {
         val blockedSession = session.copy(
@@ -239,6 +254,7 @@ class SubmitTurnInteractorTest {
         assertEquals(null, result.session.pendingBlock)
     }
 
+    /** Ensures the energy surcharge block increases the cost of the next action. */
     @Test
     fun `submit energy surcharge block increases the next action cost`() {
         val blockedSession = session.copy(

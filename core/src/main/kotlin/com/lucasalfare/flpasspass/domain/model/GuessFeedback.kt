@@ -1,5 +1,11 @@
 package com.lucasalfare.flpasspass.domain.model
 
+/**
+ * Feedback returned after a code attempt.
+ *
+ * @property correctPositions The number of digits that are both correct and in the right position.
+ * @property misplacedDigits The number of digits that exist in the secret code but are not in the right position.
+ */
 data class GuessFeedback(
   val correctPositions: Int,
   val misplacedDigits: Int,

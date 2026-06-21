@@ -9,10 +9,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
+/**
+ * Verifies the engine facade exposes only public state and command responses.
+ */
 class GameEngineTest {
 
   private val engine = GameEngine()
 
+  /** Ensures a new session exposes only public state, not internal details. */
   @Test
   fun `engine starts a game and exposes public state only`() {
     val response = engine.handle(
@@ -29,6 +33,7 @@ class GameEngineTest {
     assertEquals(response.state, engine.state())
   }
 
+  /** Ensures turn submission updates state and returns action-specific output. */
   @Test
   fun `engine submits a turn and returns response data`() {
     engine.handle(

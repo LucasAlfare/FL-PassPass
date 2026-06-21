@@ -13,7 +13,17 @@ import com.lucasalfare.flpasspass.domain.model.question.InvestigationQuestion
 import com.lucasalfare.flpasspass.domain.model.scoreAttempt
 import com.lucasalfare.flpasspass.domain.model.action.TurnAction
 
+/**
+ * Applies one submitted turn to the current internal session.
+ *
+ * This is the rule-heavy part of the application layer: it validates turn
+ * ownership, resource costs, block semantics, win conditions, and the
+ * resolution data that the engine needs to expose back to the UI.
+ */
 internal class SubmitTurnInteractor {
+    /**
+     * Validates and resolves the submitted action, returning the updated session and any action-specific output.
+     */
     fun execute(command: SubmitTurnCommand, session: GameSession): SubmitTurnResult {
         require(session.winnerId == null) { "The game is already finished." }
         require(command.playerId == session.activePlayerId) { "Only the active player can submit a turn." }
@@ -31,6 +41,9 @@ internal class SubmitTurnInteractor {
         }
     }
 
+    /**
+     * Resolves an investigation turn and returns the updated session plus the boolean answer.
+     */
     private fun submitInvestigation(
         session: GameSession,
         question: InvestigationQuestion,
@@ -67,6 +80,9 @@ internal class SubmitTurnInteractor {
         )
     }
 
+    /**
+     * Resolves a direct code attempt and returns the updated session plus the scored feedback.
+     */
     private fun submitAttemptCode(
         session: GameSession,
         guessedCode: Code,
@@ -113,6 +129,9 @@ internal class SubmitTurnInteractor {
         )
     }
 
+    /**
+     * Resolves a block action and stores the resulting effect for the opponent's next turn.
+     */
     private fun submitBlock(
         session: GameSession,
         block: BlockAction,
@@ -142,6 +161,9 @@ internal class SubmitTurnInteractor {
         return SubmitTurnResult(session = updatedSession)
     }
 
+    /**
+     * Verifies whether the current pending block allows the submitted action.
+     */
     private fun ensureActionIsAllowed(action: TurnAction, pendingBlock: PendingBlockEffect?) {
         if (pendingBlock is PendingBlockEffect.Investigation && action is TurnAction.Investigate) {
             require(action.question.blockTarget() != pendingBlock.target) {
@@ -151,6 +173,9 @@ internal class SubmitTurnInteractor {
     }
 }
 
+/**
+ * Calculates the energy required to perform an action in the current context.
+ */
 private fun TurnAction.energyCost(pendingBlock: PendingBlockEffect?): Int {
     return when (this) {
         is TurnAction.Investigate -> 1 + if (pendingBlock is PendingBlockEffect.EnergySurcharge) 3 else 0
@@ -159,6 +184,9 @@ private fun TurnAction.energyCost(pendingBlock: PendingBlockEffect?): Int {
     }
 }
 
+/**
+ * Converts a public block action into the internal effect representation used by the session model.
+ */
 private fun BlockAction.toPendingEffect(): PendingBlockEffect {
     return when (this) {
         is BlockAction.Investigation -> PendingBlockEffect.Investigation(target)

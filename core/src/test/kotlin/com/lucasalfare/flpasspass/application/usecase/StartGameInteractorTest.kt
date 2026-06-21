@@ -6,10 +6,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+/**
+ * Spec-style tests for session bootstrap behavior.
+ */
 class StartGameInteractorTest {
 
   private val interactor = StartGameInteractor()
 
+  /** Ensures the first player becomes the active player in a new game. */
   @Test
   fun `start game creates a session with the first player active`() {
     val session = interactor.execute(
@@ -27,6 +31,7 @@ class StartGameInteractorTest {
     assertEquals(2, session.players[0].blockCharges.value)
   }
 
+  /** Ensures the bootstrap command rejects duplicated player identifiers. */
   @Test
   fun `start game rejects duplicated player ids`() {
     assertFailsWith<IllegalArgumentException> {
