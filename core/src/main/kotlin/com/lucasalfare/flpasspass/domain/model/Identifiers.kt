@@ -1,5 +1,13 @@
 package com.lucasalfare.flpasspass.domain.model
 
+/**
+ * Strongly typed identifiers and bounded values used by the domain model.
+ *
+ * Using inline value classes keeps the code expressive while still protecting
+ * the rules of the game from invalid raw integers.
+ */
+
+/** Identifies a player within a session. */
 @JvmInline
 value class PlayerId(val value: Int) {
   init {
@@ -7,6 +15,7 @@ value class PlayerId(val value: Int) {
   }
 }
 
+/** Represents a single numeric digit allowed in a code. */
 @JvmInline
 value class Digit(val value: Int) {
   init {
@@ -14,6 +23,7 @@ value class Digit(val value: Int) {
   }
 }
 
+/** Represents a 1-based position inside a four-digit code. */
 @JvmInline
 value class PositionIndex(val value: Int) {
   init {
@@ -21,6 +31,7 @@ value class PositionIndex(val value: Int) {
   }
 }
 
+/** Encapsulates the energy resource consumed by actions. */
 @JvmInline
 value class EnergyPoints(val value: Int) {
   init {
@@ -28,6 +39,7 @@ value class EnergyPoints(val value: Int) {
   }
 }
 
+/** Encapsulates how many block actions a player can still spend. */
 @JvmInline
 value class BlockCharges(val value: Int) {
   init {

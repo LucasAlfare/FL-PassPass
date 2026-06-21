@@ -8,13 +8,25 @@ import com.lucasalfare.flpasspass.application.usecase.StartGameInteractor
 import com.lucasalfare.flpasspass.application.usecase.SubmitTurnCommand
 import com.lucasalfare.flpasspass.application.usecase.SubmitTurnInteractor
 
+/**
+ * Facade that exposes the game logic to UIs and other external consumers.
+ *
+ * The engine keeps the current session in memory and translates between the
+ * internal application model and the public model used by front ends.
+ */
 class GameEngine {
   private val startGameInteractor = StartGameInteractor()
   private val submitTurnInteractor = SubmitTurnInteractor()
   private var session: GameSession? = null
 
+  /**
+   * Returns the current public state, or null before a game has been started.
+   */
   fun state(): GameState? = session?.toPublicState()
 
+  /**
+   * Routes a public command to the correct application use case and returns the normalized response.
+   */
   fun handle(command: GameCommand): GameResponse {
     return when (command) {
       is GameCommand.StartGame -> startGame(command)
@@ -22,6 +34,9 @@ class GameEngine {
     }
   }
 
+  /**
+   * Starts a new game session after verifying that no unfinished game is already running.
+   */
   private fun startGame(command: GameCommand.StartGame): GameResponse {
     val currentSession = session
     require(currentSession == null || currentSession.winnerId != null) { "A game is already in progress." }
@@ -38,6 +53,9 @@ class GameEngine {
     return GameResponse(state = internalSession.toPublicState())
   }
 
+  /**
+   * Applies a submitted turn to the active session and stores the resulting state.
+   */
   private fun submitTurn(command: GameCommand.SubmitTurn): GameResponse {
     val currentSession = requireNotNull(session) { "The game has not started yet." }
     val result = submitTurnInteractor.execute(
@@ -58,6 +76,9 @@ class GameEngine {
   }
 }
 
+/**
+ * Converts a public player setup input into the internal setup command.
+ */
 private fun PlayerSetupInput.toInternal(): PlayerSetup {
   return PlayerSetup(
     id = id,
@@ -65,6 +86,9 @@ private fun PlayerSetupInput.toInternal(): PlayerSetup {
   )
 }
 
+/**
+ * Projects the internal session model into the public engine state.
+ */
 private fun GameSession.toPublicState(): GameState {
   return GameState(
     players = players.map {
@@ -80,6 +104,9 @@ private fun GameSession.toPublicState(): GameState {
   )
 }
 
+/**
+ * Converts an internal pending block effect into the public representation used by UIs.
+ */
 private fun PendingBlockEffect.toPublicState(): PendingBlockState {
   return when (this) {
     is PendingBlockEffect.Investigation -> PendingBlockState.Investigation(target)

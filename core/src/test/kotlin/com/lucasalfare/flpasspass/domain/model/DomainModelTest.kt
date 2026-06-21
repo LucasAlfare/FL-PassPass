@@ -6,8 +6,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+/**
+ * Documents the core value-object and rule semantics of the domain layer.
+ */
 class DomainModelTest {
 
+  /** Ensures the code factory builds the canonical four-digit shape. */
   @Test
   fun `code factory creates a valid 4 digit unique code`() {
     val code = Code.of(7, 2, 9, 4)
@@ -15,6 +19,7 @@ class DomainModelTest {
     assertEquals(listOf(Digit(7), Digit(2), Digit(9), Digit(4)), code.digits)
   }
 
+  /** Ensures repeated digits are rejected by the code invariant. */
   @Test
   fun `code rejects repeated digits`() {
     assertFailsWith<IllegalArgumentException> {
@@ -22,6 +27,7 @@ class DomainModelTest {
     }
   }
 
+  /** Ensures code length is enforced at construction time. */
   @Test
   fun `code rejects wrong length`() {
     assertFailsWith<IllegalArgumentException> {
@@ -29,12 +35,14 @@ class DomainModelTest {
     }
   }
 
+  /** Ensures digits accept the full supported range. */
   @Test
   fun `digit accepts values between 0 and 9`() {
     assertEquals(0, Digit(0).value)
     assertEquals(9, Digit(9).value)
   }
 
+  /** Ensures digits outside the supported range are rejected. */
   @Test
   fun `digit rejects values outside the valid range`() {
     assertFailsWith<IllegalArgumentException> {
@@ -46,12 +54,14 @@ class DomainModelTest {
     }
   }
 
+  /** Ensures positions use the one-based index expected by the game rules. */
   @Test
   fun `position index accepts values from 1 to 4`() {
     assertEquals(1, PositionIndex(1).value)
     assertEquals(4, PositionIndex(4).value)
   }
 
+  /** Ensures invalid positions fail fast. */
   @Test
   fun `position index rejects values outside the valid range`() {
     assertFailsWith<IllegalArgumentException> {
@@ -63,6 +73,7 @@ class DomainModelTest {
     }
   }
 
+  /** Ensures guess feedback accepts consistent counts within the four-digit game. */
   @Test
   fun `guess feedback accepts consistent values`() {
     val feedback = GuessFeedback(correctPositions = 2, misplacedDigits = 1)
@@ -71,6 +82,7 @@ class DomainModelTest {
     assertEquals(1, feedback.misplacedDigits)
   }
 
+  /** Ensures feedback totals cannot exceed the length of the code. */
   @Test
   fun `guess feedback rejects invalid totals`() {
     assertFailsWith<IllegalArgumentException> {
@@ -78,6 +90,7 @@ class DomainModelTest {
     }
   }
 
+  /** Ensures code scoring counts exact matches and misplaced digits correctly. */
   @Test
   fun `code scoring counts correct and misplaced digits`() {
     val secret = Code.of(7, 2, 9, 4)
@@ -89,6 +102,7 @@ class DomainModelTest {
     assertEquals(2, feedback.misplacedDigits)
   }
 
+  /** Ensures the domain resolves every supported investigation question type. */
   @Test
   fun `code matches investigation questions`() {
     val code = Code.of(7, 2, 9, 4)
@@ -99,6 +113,7 @@ class DomainModelTest {
     assertEquals(true, code.matches(InvestigationQuestion.PositionComparison(PositionIndex(1), PositionIndex(2))))
   }
 
+  /** Ensures new players start with the default resource bundle. */
   @Test
   fun `player resources start with default values`() {
     val resources = PlayerResources()

@@ -8,8 +8,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+/**
+ * Documents the invariants enforced by the internal application session model.
+ */
 class ApplicationModelTest {
 
+  /** Ensures a valid session can be created with two distinct players and consistent references. */
   @Test
   fun `game session accepts two unique players and valid references`() {
     val session = GameSession(
@@ -26,6 +30,7 @@ class ApplicationModelTest {
     assertEquals(PlayerId(2), session.winnerId)
   }
 
+  /** Ensures duplicated player identifiers are rejected early. */
   @Test
   fun `game session rejects duplicated players`() {
     assertFailsWith<IllegalArgumentException> {
@@ -39,6 +44,7 @@ class ApplicationModelTest {
     }
   }
 
+  /** Ensures the active player always belongs to the session roster. */
   @Test
   fun `game session rejects active player not in session`() {
     assertFailsWith<IllegalArgumentException> {
@@ -52,6 +58,7 @@ class ApplicationModelTest {
     }
   }
 
+  /** Ensures the winner, when present, also belongs to the session roster. */
   @Test
   fun `game session rejects winner not in session`() {
     assertFailsWith<IllegalArgumentException> {

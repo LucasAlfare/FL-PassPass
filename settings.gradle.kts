@@ -3,4 +3,5 @@ plugins {
 }
 rootProject.name = "FL-PassPass"
 include(":core")
+include(":bot")
 include(":terminal-based-ui")
