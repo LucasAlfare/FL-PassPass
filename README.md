@@ -1,26 +1,41 @@
-# CÓDIGO SECRETO
+# PassPass
 
 ## Um duelo de dedução, estratégia e gerenciamento de recursos
 
+### Visão geral
+
+**PassPass** é um jogo competitivo de dedução onde dois jogadores entram em uma disputa para descobrir o código secreto um do outro.
+
+Cada jogador possui uma combinação secreta de 4 dígitos e deve usar investigação, tentativas e bloqueios estratégicos para descobrir o código adversário antes de ser descoberto.
+
+Vencer não depende apenas de descobrir a resposta: administrar energia, escolher o momento certo para atacar e impedir o avanço do adversário são partes essenciais da estratégia.
+
 ---
 
-# Objetivo
+# 1. Objetivo do jogo
 
-Descubra o código secreto do adversário antes que ele descubra o seu.
+Cada jogador possui um código secreto.
 
-Cada jogador possui um código oculto de 4 dígitos e deve usar investigação, tentativas e bloqueios para encontrar a combinação correta.
+O objetivo é:
+
+> Descobrir o código secreto do adversário antes que ele descubra o seu.
+
+A partida termina imediatamente quando:
+
+* Um jogador descobre corretamente o código adversário.
+* Um jogador fica sem energia.
 
 ---
 
-# 1. Preparação
+# 2. Preparação
 
-Cada jogador cria um código secreto.
+Antes do início da partida, cada jogador cria seu código secreto.
 
-O código deve possuir:
+O código deve seguir estas regras:
 
-* 4 dígitos;
-* números de 0 a 9;
-* nenhum dígito pode se repetir.
+* Possuir exatamente **4 dígitos**.
+* Utilizar números de **0 a 9**.
+* Nenhum dígito pode se repetir.
 
 Exemplo válido:
 
@@ -31,56 +46,116 @@ Exemplo válido:
 Exemplos inválidos:
 
 ```
-7 7 2 4 ❌
+7 7 2 4
 ```
 
+(repetição de dígito)
+
 ```
-1 2 3 4 5 ❌
+1 2 3 4 5
 ```
 
-O código deve permanecer escondido durante toda a partida.
+(quantidade incorreta de dígitos)
+
+O código deve permanecer oculto durante toda a partida.
 
 ---
 
-# 2. Recursos iniciais
+# 3. Recursos dos jogadores
 
 Cada jogador começa com:
 
-## Energia: 25 pontos
+## Energia
 
-A energia representa sua capacidade de investigar, atacar e se defender.
+```
+25 pontos
+```
 
-## Bloqueios: 2 cargas
+A energia representa a capacidade do jogador de realizar ações.
 
-Cada jogador possui apenas duas oportunidades de usar bloqueios durante a partida.
+Toda ação possui um custo.
+
+Se a energia chegar a:
+
+```
+0
+```
+
+o jogador perde imediatamente.
+
+A energia faz parte da estratégia:
+
+* gastar pouco e investigar;
+* gastar muito tentando finalizar;
+* usar recursos para atrapalhar o adversário.
 
 ---
 
-# 3. Turnos
+## Bloqueios
+
+Cada jogador recebe:
+
+```
+2 cargas de bloqueio
+```
+
+Bloqueios são recursos limitados usados para criar obstáculos ao adversário.
+
+Cada bloqueio utilizado consome uma carga.
+
+---
+
+# 4. Estrutura dos turnos
 
 Os jogadores alternam turnos.
 
-Em cada turno, o jogador escolhe uma única ação:
+Em seu turno, o jogador deve escolher **uma única ação**:
 
 1. Investigar
 2. Tentar código
 3. Bloquear
 
-A ação escolhida deve poder ser paga com a energia disponível.
+A ação só pode ser realizada se o jogador possuir energia suficiente.
+
+Após a ação ser concluída, o turno passa para o adversário.
+
+---
+
+# 5. Ações disponíveis
 
 ---
 
 # AÇÃO 1 — INVESTIGAR
 
-**Custo: 1 energia**
+## Custo:
 
-O jogador faz uma pergunta sobre o código adversário.
+```
+1 energia
+```
 
-As perguntas devem seguir exatamente uma das quatro categorias:
+A investigação permite fazer perguntas sobre o código inimigo.
+
+O adversário deve responder corretamente:
+
+```
+SIM
+```
+
+ou
+
+```
+NÃO
+```
+
+A investigação não revela diretamente o código.
+
+Ela serve para eliminar possibilidades e construir uma dedução.
+
+Existem quatro categorias de investigação.
 
 ---
 
-## 1) Existência de dígito
+## 5.1 Existência de dígito
 
 Pergunta:
 
@@ -88,16 +163,25 @@ Pergunta:
 
 Exemplo:
 
-> O número 8 existe?
+```
+O número 8 existe?
+```
 
 Resposta:
 
-* Sim
-* Não
+```
+Sim
+```
+
+ou
+
+```
+Não
+```
 
 ---
 
-## 2) Valor da posição
+## 5.2 Valor da posição
 
 Pergunta:
 
@@ -105,40 +189,58 @@ Pergunta:
 
 Exemplo:
 
-> O segundo dígito é 4?
+```
+O segundo dígito é 4?
+```
 
 Resposta:
 
-* Sim
-* Não
+```
+Sim
+```
+
+ou
+
+```
+Não
+```
 
 ---
 
-## 3) Característica da posição
+## 5.3 Característica da posição
 
 Pergunta:
 
-> A posição X possui determinada característica?
+> O dígito da posição X possui determinada característica?
 
-Opções:
+Possibilidades:
 
-* É par?
-* É ímpar?
-* É maior que 5?
-* É menor que 5?
+* É par
+* É ímpar
+* É maior que 5
+* É menor que 5
 
 Exemplo:
 
-> O terceiro dígito é par?
+```
+O terceiro dígito é par?
+```
 
 Resposta:
 
-* Sim
-* Não
+```
+Sim
+```
+
+ou
+
+```
+Não
+```
 
 ---
 
-## 4) Comparação entre posições
+## 5.4 Comparação entre posições
 
 Pergunta:
 
@@ -146,24 +248,33 @@ Pergunta:
 
 Exemplo:
 
-> O primeiro dígito é maior que o quarto?
+```
+O primeiro dígito é maior que o quarto?
+```
 
 Resposta:
 
-* Sim
-* Não
+```
+Sim
+```
 
----
+ou
 
-A investigação serve para reduzir as possibilidades e montar uma dedução do código.
+```
+Não
+```
 
 ---
 
 # AÇÃO 2 — TENTAR CÓDIGO
 
-**Custo: 5 energias**
+## Custo:
 
-O jogador tenta descobrir o código completo.
+```
+5 energias
+```
+
+O jogador tenta descobrir o código completo do adversário.
 
 Exemplo:
 
@@ -173,19 +284,25 @@ Tentativa:
 7 9 2 4
 ```
 
-O adversário compara com o código real e informa:
+O adversário compara com o código verdadeiro e informa:
 
 ## Corretos
 
-Quantidade de dígitos na posição correta.
+Quantidade de dígitos:
+
+* existentes;
+* na posição correta.
 
 ## Deslocados
 
-Quantidade de dígitos corretos que existem no código, mas estão na posição errada.
+Quantidade de dígitos:
+
+* existentes no código;
+* porém em posição diferente.
 
 ---
 
-Exemplo:
+## Exemplo
 
 Código real:
 
@@ -199,26 +316,26 @@ Tentativa:
 7 9 4 1
 ```
 
-Resposta:
+Resultado:
 
 ```
-1 correto
-2 deslocados
+Corretos: 1
+Deslocados: 2
 ```
 
-Significa:
+Interpretação:
 
-* 1 número está na posição certa;
-* 2 números existem no código, mas estão em posições diferentes.
+* O número 7 está correto e na posição correta.
+* Os números 9 e 4 existem no código, mas estão em posições diferentes.
 
 ---
 
 ## Vitória
 
-Se a tentativa resultar em:
+Se o resultado for:
 
 ```
-4 corretos
+Corretos: 4
 ```
 
 o jogador descobriu o código e vence imediatamente.
@@ -227,31 +344,54 @@ o jogador descobriu o código e vence imediatamente.
 
 # AÇÃO 3 — BLOQUEAR
 
-**Custo: 3 energias**
+## Custo:
 
-O jogador usa uma carga de bloqueio para atrapalhar o próximo turno do adversário.
+```
+3 energias
+```
 
-Cada jogador possui apenas 2 bloqueios.
+O jogador usa uma carga de bloqueio para prejudicar o próximo turno do adversário.
 
-Escolha um tipo:
+Bloqueios não impedem completamente o adversário de jogar.
+
+Eles apenas alteram suas opções.
 
 ---
 
-## Bloqueio de investigação
+# Tipos de bloqueio
 
-O adversário não pode usar uma categoria específica de investigação no próximo turno.
+---
+
+## 1. Bloqueio de investigação
+
+O jogador escolhe uma categoria de investigação que ficará indisponível no próximo turno adversário.
+
+Categorias:
+
+* Existência de dígito
+* Valor da posição
+* Característica da posição
+* Comparação entre posições
 
 Exemplo:
 
-> Bloquear perguntas de Existência.
+```
+Bloquear perguntas de existência
+```
 
-O adversário continua podendo usar outras categorias.
+No próximo turno, o adversário não poderá perguntar:
+
+```
+O número X existe?
+```
 
 ---
 
-## Bloqueio de tentativa
+## 2. Bloqueio de tentativa
 
-O adversário pode tentar descobrir o código, mas recebe uma pista reduzida.
+O adversário ainda pode tentar descobrir o código.
+
+Porém, a resposta será reduzida.
 
 Resposta normal:
 
@@ -267,9 +407,9 @@ Apenas Corretos
 
 ---
 
-## Bloqueio de energia
+## 3. Bloqueio de energia
 
-A próxima ação do adversário custa +3 energias.
+A próxima ação do adversário terá custo aumentado.
 
 Exemplo:
 
@@ -289,46 +429,166 @@ Com bloqueio:
 
 ---
 
-Após usado, o bloqueio é consumido.
+Após ser aplicado:
+
+* o bloqueio é consumido;
+* o efeito acontece uma única vez.
 
 ---
 
-# 4. Perda de energia
+# 6. Exemplo de partida
 
-Quando um jogador chega a:
+Jogador A:
+
+Código:
 
 ```
-0 energia
+7 2 9 4
 ```
 
-ele perde imediatamente.
+Jogador B:
 
-Não importa se estava próximo de descobrir o código.
+Código:
 
-A administração da energia faz parte da estratégia.
-
----
-
-# 5. Regras importantes
-
-* O código não pode ser alterado depois de criado.
-* O jogador deve responder corretamente às perguntas.
-* Toda ação precisa ter energia suficiente.
-* Bloqueios nunca impedem completamente o adversário de jogar.
-* As informações descobertas devem ser anotadas pelo jogador.
-* A partida termina assim que um jogador descobre o código ou perde toda a energia.
+```
+5 8 1 3
+```
 
 ---
 
-# Resumo estratégico
+Turno do jogador A:
 
-**Investigar**
-→ ganha informação, mas consome tempo e energia.
+A investiga:
 
-**Tentar código**
-→ pode garantir a vitória, mas custa caro.
+```
+O número 9 existe?
+```
 
-**Bloquear**
-→ atrapalha o adversário, mas usa recursos limitados.
+Resposta:
 
-O vencedor será o jogador que conseguir administrar melhor suas informações e seus recursos.
+```
+Sim
+```
+
+Energia:
+
+```
+24
+```
+
+---
+
+Turno do jogador B:
+
+B usa bloqueio:
+
+```
+Bloquear investigação de posição
+```
+
+Energia:
+
+```
+22
+```
+
+---
+
+Turno do jogador A:
+
+A tenta:
+
+```
+7 2 0 4
+```
+
+Resposta:
+
+```
+Corretos: 3
+Deslocados: 0
+```
+
+Agora A sabe que está muito próximo da solução.
+
+---
+
+# 7. Estratégia
+
+Cada ação possui uma vantagem e um risco.
+
+## Investigar
+
+Vantagem:
+
+* baixo custo;
+* aumenta conhecimento.
+
+Risco:
+
+* demora para concluir.
+
+---
+
+## Tentar código
+
+Vantagem:
+
+* pode finalizar imediatamente.
+
+Risco:
+
+* custo alto.
+
+---
+
+## Bloquear
+
+Vantagem:
+
+* atrasa o adversário;
+* cria oportunidade.
+
+Risco:
+
+* possui uso limitado;
+* consome energia.
+
+---
+
+# 8. Regras finais
+
+* O código secreto nunca pode ser alterado.
+* Toda resposta deve ser verdadeira.
+* Toda ação precisa possuir energia suficiente.
+* Bloqueios não anulam completamente ações.
+* Informações obtidas devem ser usadas para dedução.
+* A partida termina imediatamente quando houver vencedor ou jogador sem energia.
+
+---
+
+# Resumo da partida
+
+```
+Criar códigos secretos
+
+↓
+
+Alternar turnos
+
+↓
+
+Investigar, tentar ou bloquear
+
+↓
+
+Administrar energia
+
+↓
+
+Descobrir o código inimigo
+
+↓
+
+Vencer
+```
