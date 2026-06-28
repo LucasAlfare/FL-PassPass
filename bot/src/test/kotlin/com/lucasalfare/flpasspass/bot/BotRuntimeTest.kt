@@ -1,7 +1,10 @@
 package com.lucasalfare.flpasspass.bot
 
+import com.lucasalfare.flpasspass.domain.model.BlockCharges
 import com.lucasalfare.flpasspass.domain.model.Code
+import com.lucasalfare.flpasspass.domain.model.EnergyPoints
 import com.lucasalfare.flpasspass.domain.model.PlayerId
+import com.lucasalfare.flpasspass.domain.model.action.TurnAction
 import com.lucasalfare.flpasspass.engine.GameCommand
 import com.lucasalfare.flpasspass.engine.GameResponse
 import com.lucasalfare.flpasspass.engine.GameState
@@ -17,8 +20,8 @@ import kotlin.test.assertTrue
 class BotRuntimeTest {
   private val gameState = GameState(
     players = listOf(
-      PlayerState(PlayerId(1), com.lucasalfare.flpasspass.domain.model.EnergyPoints(25), com.lucasalfare.flpasspass.domain.model.BlockCharges(2)),
-      PlayerState(PlayerId(2), com.lucasalfare.flpasspass.domain.model.EnergyPoints(25), com.lucasalfare.flpasspass.domain.model.BlockCharges(2)),
+      PlayerState(PlayerId(1), EnergyPoints(25), BlockCharges(2)),
+      PlayerState(PlayerId(2), EnergyPoints(25), BlockCharges(2)),
     ),
     activePlayerId = PlayerId(1),
     winnerId = null,
@@ -47,9 +50,9 @@ class BotRuntimeTest {
     assertTrue(decision.confidence in 0.0..1.0)
     assertEquals(PlayerId(1), gameState.activePlayerId)
     assertTrue(
-      decision.action is com.lucasalfare.flpasspass.domain.model.action.TurnAction.Investigate ||
-        decision.action is com.lucasalfare.flpasspass.domain.model.action.TurnAction.AttemptCode ||
-        decision.action is com.lucasalfare.flpasspass.domain.model.action.TurnAction.Block,
+      decision.action is TurnAction.Investigate ||
+          decision.action is TurnAction.AttemptCode ||
+          decision.action is TurnAction.Block,
     )
   }
 
@@ -59,7 +62,7 @@ class BotRuntimeTest {
     val runtime = BotRuntime()
     val command = GameCommand.SubmitTurn(
       playerId = PlayerId(1),
-      action = com.lucasalfare.flpasspass.domain.model.action.TurnAction.AttemptCode(Code.of(1, 2, 3, 4)),
+      action = TurnAction.AttemptCode(Code.of(1, 2, 3, 4)),
     )
     val response = GameResponse(state = gameState)
 
